@@ -10,6 +10,16 @@ export const NoteReducer = (state, action) => {
         ...state,
         notes: state.notes.concat(action.payload),
       };
+    case "UPDATE_NOTE":
+      return {
+        ...state,
+        notes: state.notes.concat(action.payload),
+      };
+    case "DELETE_NOTE":
+      return {
+        ...state,
+        notes: state.notes.filter((item) => item._id !== action.payload),
+      };
     case "REGISTER":
       return {
         ...state,
@@ -20,6 +30,10 @@ export const NoteReducer = (state, action) => {
         ...state,
         user: action.payload,
       };
+    case "SORT_BY_DATE":
+      return { ...state, sort: action.payload };
+    case "FILTER_BY_CATEGORY":
+      return { ...state, category: action.payload };
     case "LOGOUT":
       return {
         ...state,

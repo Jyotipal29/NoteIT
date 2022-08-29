@@ -1,11 +1,11 @@
 import logo from "./logo.svg";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/navbar/Navbar";
-import Home from "./pages/home/Home";
-import Register from "./pages/register/Register";
-import Login from "./pages/login/Login";
-import Note from "./pages/note/Note";
-
+import Navbar from "./component/Navbar";
+import Home from "./screen/Home";
+import NoteList from "./screen/NoteList";
+import Register from "./screen/Register";
+import Login from "./screen/Login";
+import Single from "./screen/Single";
 function App() {
   return (
     <Router>
@@ -13,7 +13,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/note" element={<Note />} />
+          <Route exact path="/notelist" element={<NoteList />} />
+          <Route exact path="/note/:id" element={<Single />} />
+
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/login" element={<Login />} />
         </Routes>

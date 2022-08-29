@@ -11,6 +11,8 @@ export const NoteProvider = ({ children }) => {
     notes: [],
     note: [],
     user: JSON.parse(localStorage.getItem("user") || null) || [],
+    category: {},
+    sort: "newest",
   });
 
   const [token, setToken] = useState(localStorage.getItem("token") || null);
@@ -20,7 +22,14 @@ export const NoteProvider = ({ children }) => {
 
   return (
     <noteContext.Provider
-      value={{ state, dispatch, token, setToken, isAuth, setIsAuth }}
+      value={{
+        state,
+        dispatch,
+        token,
+        setToken,
+        isAuth,
+        setIsAuth,
+      }}
     >
       {children}
     </noteContext.Provider>
