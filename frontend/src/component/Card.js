@@ -13,14 +13,14 @@ const Wrapper = styled.div`
   min-width: 400px;
 
   padding: 30px 40px;
-  background-color: teal;
+  background-color: #fff;
 
   border-radius: 10px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 `;
 const Form = styled.form``;
 const Heading = styled.h1`
-  color: #fff;
+  color: black;
   margin-bottom: 10px;
   text-align: center;
 `;
@@ -29,7 +29,7 @@ const FormControl = styled.div`
 `;
 const Label = styled.label`
   display: block;
-  color: #fff;
+  color: black;
   margin-bottom: 10px;
 `;
 const Input = styled.input`
@@ -38,7 +38,7 @@ const Input = styled.input`
   padding: 10px;
 `;
 const Textarea = styled.textarea`
-  width: 100%;
+  width: 95%;
   padding: 20px;
 `;
 const Button = styled.button`

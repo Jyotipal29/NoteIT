@@ -102,24 +102,27 @@ const SingleNote = () => {
 
   return (
     <>
-      {transformedProduct()?.map((item) => (
-        <Container>
-          <Wrapper>
-            <Heading>{item.title}</Heading>
-            <Text>{item.text}</Text>
-            <Cat>{item.category}</Cat>
-            <Icons>
-              <DateD>{new Date(item.createdAt).toLocaleString("en-US")}</DateD>
-              <Button onClick={() => deleteHandler(item._id)}>
-                <DeleteOutlineIcon />
-              </Button>
-              <Link to={`/note/${item._id}`}>
-                <EditOutlinedIcon />
-              </Link>
-            </Icons>
-          </Wrapper>
-        </Container>
-      ))}
+      {notes &&
+        notes.map((item) => (
+          <Container>
+            <Wrapper>
+              <Heading>{item.title}</Heading>
+              <Text>{item.text}</Text>
+              <Cat>{item.category}</Cat>
+              <Icons>
+                <DateD>
+                  {new Date(item.createdAt).toLocaleString("en-US")}
+                </DateD>
+                <Button onClick={() => deleteHandler(item._id)}>
+                  <DeleteOutlineIcon />
+                </Button>
+                <Link to={`/note/${item._id}`}>
+                  <EditOutlinedIcon />
+                </Link>
+              </Icons>
+            </Wrapper>
+          </Container>
+        ))}
     </>
   );
 };
