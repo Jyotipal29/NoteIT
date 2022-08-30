@@ -83,17 +83,19 @@ const SingleNote = () => {
 
   const transformedProduct = () => {
     let sortedProducts = notes;
-    if (sort) {
-      sortedProducts = sortedProducts.sort((a, b) =>
-        sort === "newest"
-          ? a.createdAt - b.createdAt
-          : b.createdAt - a.createdAt
-      );
-    }
+    sortedProducts = sortedProducts.sort((a, b) => {
+      const aCreatedAt = new Date(a.createdAt);
+      const bCreatedAt = new Date(b.createdAt);
+
+      return sort === "newest"
+        ? bCreatedAt - aCreatedAt
+        : aCreatedAt - bCreatedAt;
+    });
+
     if (category) {
       console.log(category, "93");
       sortedProducts = sortedProducts?.filter(
-        (item) => item.category === category
+        (item) => item.category.toLowerCase() == category.toLowerCase()
       );
     }
 
@@ -102,8 +104,9 @@ const SingleNote = () => {
 
   return (
     <>
-      {notes &&
-        notes.map((item) => (
+      {
+        // notes &&
+        transformedProduct().map((item) => (
           <Container>
             <Wrapper>
               <Heading>{item.title}</Heading>
@@ -122,7 +125,8 @@ const SingleNote = () => {
               </Icons>
             </Wrapper>
           </Container>
-        ))}
+        ))
+      }
     </>
   );
 };

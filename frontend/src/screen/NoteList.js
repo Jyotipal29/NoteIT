@@ -48,6 +48,9 @@ const NoteList = () => {
               dispatch({ type: "SORT_BY_DATE", payload: e.target.value })
             }
           >
+            <Option value="newest" disabled>
+              newest
+            </Option>
             <Option value="newest">newest</Option>
             <Option value="oldest">oldest</Option>
           </Select>
@@ -60,8 +63,11 @@ const NoteList = () => {
               dispatch({ type: "FILTER_BY_CATEGORY", payload: e.target.value })
             }
           >
+            <Option value="imp" disabled>
+              imp
+            </Option>
             <Option value="imp">imp</Option>
-            <Option value="v imp">v imp</Option>
+            <Option value="vimp">vimp</Option>
             <Option value="basic"> basic</Option>
           </Select>
         </Filter>
