@@ -92,7 +92,7 @@ const SingleNote = () => {
         : aCreatedAt - bCreatedAt;
     });
 
-    if (category) {
+    if (category && category !== "all") {
       console.log(category, "93");
       sortedProducts = sortedProducts?.filter(
         (item) => item.category.toLowerCase() == category.toLowerCase()

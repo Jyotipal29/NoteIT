@@ -11,7 +11,7 @@ export const NoteProvider = ({ children }) => {
     notes: [],
     note: [],
     user: JSON.parse(localStorage.getItem("user") || null) || [],
-    category: "",
+    category: "all",
     sort: "newest",
   });
 

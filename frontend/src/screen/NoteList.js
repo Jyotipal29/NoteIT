@@ -34,7 +34,13 @@ const Select = styled.select`
 `;
 const Option = styled.option``;
 const NoteList = () => {
-  const { dispatch } = useNote();
+  const {
+    dispatch,
+    state: { notes },
+  } = useNote();
+  const categories = notes
+    .map((note) => note.category.toLowerCase())
+    .filter((note, index, self) => self.indexOf(note) === index);
 
   return (
     <Container>
@@ -48,9 +54,7 @@ const NoteList = () => {
               dispatch({ type: "SORT_BY_DATE", payload: e.target.value })
             }
           >
-            <Option value="newest" disabled>
-              newest
-            </Option>
+            <Option disabled>By date</Option>
             <Option value="newest">newest</Option>
             <Option value="oldest">oldest</Option>
           </Select>
@@ -63,12 +67,13 @@ const NoteList = () => {
               dispatch({ type: "FILTER_BY_CATEGORY", payload: e.target.value })
             }
           >
-            <Option value="imp" disabled>
+            {/* <Option value="imp" disabled>
               imp
-            </Option>
-            <Option value="imp">imp</Option>
-            <Option value="vimp">vimp</Option>
-            <Option value="basic"> basic</Option>
+            </Option> */}
+            <Option value="all">All</Option>
+            {categories.map((category) => (
+              <Option value={category}>{category.toUpperCase()}</Option>
+            ))}
           </Select>
         </Filter>
       </Filters>
