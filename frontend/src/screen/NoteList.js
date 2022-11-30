@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useNote } from "../context/context";
 const Container = styled.div`
   color: #f9f9f9;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
 `;
 const Wrapper = styled.div`
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 10px;
+  /* margin: 10px; */
 `;
 const Heading = styled.h1`
   text-align: center;

@@ -4,51 +4,53 @@ import styled from "styled-components";
 import axios from "axios";
 import { api } from "../constants/api";
 import { useNote } from "../context/context";
+import { toast } from "react-toastify";
 const Container = styled.div`
-  width: 400px;
-  margin: 20px auto;
   position: relative;
+  top: 30px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 const Wrapper = styled.div`
-  min-width: 400px;
-
-  padding: 30px 40px;
-  background-color: #fff;
-
-  border-radius: 10px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  /* border: 1px solid black; */
 `;
-const Form = styled.form``;
-const Heading = styled.h1`
-  color: black;
-  margin-bottom: 10px;
+const Form = styled.form`
+  padding: 20px 20px;
+  margin: 20px 30px;
+`;
+const Heading = styled.h2`
+  margin-top: 0;
   text-align: center;
+  font-size: 30px;
 `;
 const FormControl = styled.div`
   padding: 10px;
 `;
 const Label = styled.label`
   display: block;
-  color: black;
-  margin-bottom: 10px;
+  color: #777;
+  font-size: 20px;
 `;
 const Input = styled.input`
   display: block;
-  width: 100%;
   padding: 10px;
-`;
-const Textarea = styled.textarea`
-  width: 95%;
-  padding: 20px;
+  width: 90%;
 `;
 const Button = styled.button`
-  padding: 10px 50px;
-  font-size: 16px;
+  padding: 5px 20px;
+  margin: 5px 10px;
+  font-size: 20px;
+  background: blue;
+  outline: none;
   border: none;
-  margin-top: 10px;
-  margin-left: 15px;
+  color: white;
 `;
-
+const Subbutton = styled.button`
+  padding: 5px 20px;
+  margin: 5px 10px;
+  font-size: 20px;
+  border: 1px solid blue;
+  color: blue;
+`;
 const Card = ({ show, setShow }) => {
   const {
     state: { user, notes },
@@ -60,12 +62,14 @@ const Card = ({ show, setShow }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     try {
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       };
+
       const { data } = await axios.post(
         `${api}/note/create`,
         { title, text, category },
@@ -76,6 +80,7 @@ const Card = ({ show, setShow }) => {
       setTitle("");
       setText("");
       setCategory("");
+
       console.log(notes, "notes");
     } catch (error) {
       console.log(error);
@@ -87,6 +92,7 @@ const Card = ({ show, setShow }) => {
       <Wrapper>
         <Form onSubmit={submitHandler}>
           <Heading>Make a note</Heading>
+
           <FormControl>
             <Label>Title</Label>
             <Input
@@ -97,7 +103,7 @@ const Card = ({ show, setShow }) => {
           </FormControl>
           <FormControl>
             <Label>Text</Label>
-            <Textarea
+            <Input
               name="text"
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -113,7 +119,7 @@ const Card = ({ show, setShow }) => {
           </FormControl>
 
           <Button stype="submit">save</Button>
-          <Button onClick={() => setShow(!show)}>cancel</Button>
+          <Subbutton onClick={() => setShow(!show)}>cancel</Subbutton>
         </Form>
       </Wrapper>
     </Container>

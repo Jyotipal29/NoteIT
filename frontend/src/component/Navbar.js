@@ -3,8 +3,13 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useNote } from "../context/context";
 import { useNavigate } from "react-router-dom";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 const Container = styled.div`
   background-color: blue;
+  /* position: fixed;
+  z-index: 9999;
+  width: 100%; */
 `;
 const Wrapper = styled.div`
   max-width: 1400px;
@@ -23,15 +28,22 @@ const Logo = styled.div`
 `;
 const NavItem = styled.ul`
   display: flex;
+  align-items: center;
 `;
 const NavItems = styled.li`
   color: #fff;
   font-size: 20px;
   font-weight: bold;
   margin-left: 30px;
+  display: flex;
+  flex-direction: column;
 `;
 const Logout = styled.button`
-  margin-left: 5px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 35px;
+  font-weight: bold;
 `;
 const Navbar = () => {
   const navigate = useNavigate();
@@ -39,14 +51,14 @@ const Navbar = () => {
     state: { user },
     dispatch,
   } = useNote();
-
+  console.log(user, "user");
   const logout = (e) => {
     e.preventDefault();
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     localStorage.removeItem("isAuth");
     dispatch({ type: "LOGOUT" });
-    navigate("/register");
+    navigate("/login");
   };
   return (
     <Container>
@@ -56,41 +68,50 @@ const Navbar = () => {
             NoteIT
           </Link>
         </Logo>
-        <NavItem>
-          <NavItems>
-            <Link
-              to="/notelist"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              notes
-            </Link>
-          </NavItems>
-          {user ? (
-            <>
-              <Logout onClick={logout}>logout</Logout>
-              <NavItems>{user.name}</NavItems>
-            </>
-          ) : (
-            <>
-              {/* <NavItems>
-                <Link
-                  to="/login"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  login
-                </Link>
-              </NavItems>
-              <NavItems>
-                <Link
-                  to="/register"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  Register
-                </Link>
-              </NavItems> */}
-            </>
-          )}
-        </NavItem>
+        {user ? (
+          <NavItem>
+            <NavItems>
+              <Link
+                to="/notelist"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                notes
+              </Link>
+            </NavItems>
+            <NavItems>
+              <Link
+                to="/profile"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <AccountCircleIcon />
+              </Link>
+            </NavItems>
+            <NavItems>
+              <Logout onClick={logout}>
+                <LogoutOutlinedIcon />
+              </Logout>
+            </NavItems>
+          </NavItem>
+        ) : (
+          <NavItem>
+            <NavItems>
+              <Link
+                to="/login"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                login
+              </Link>
+            </NavItems>
+            <NavItems>
+              <Link
+                to="/register"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                Register
+              </Link>
+            </NavItems>
+          </NavItem>
+        )}
       </Wrapper>
     </Container>
   );

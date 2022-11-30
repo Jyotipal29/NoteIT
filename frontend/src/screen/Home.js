@@ -10,17 +10,17 @@ const Container = styled.div`
   height: 80vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
 `;
 const Wrapper = styled.div``;
 const Toggler = styled.div`
   position: absolute;
-  bottom: 100px;
+  bottom: 10px;
   left: 10px;
 `;
 const Button = styled.button`
-  padding: 10px;
+  padding: 15px;
   font-size: 40px;
   border-radius: 50%;
   border: none;

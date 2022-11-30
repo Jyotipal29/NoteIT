@@ -6,48 +6,46 @@ import { api } from "../constants/api";
 import { useNote } from "../context/context";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 const Container = styled.div`
-  width: 400px;
-  margin: 20px auto;
+  display: flex;
+  justify-content: center;
   position: relative;
+  top: 30px;
 `;
 const Wrapper = styled.div`
-  min-width: 400px;
-
-  padding: 30px 40px;
-  background-color: teal;
-
-  border-radius: 10px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
-const Form = styled.form``;
-const Heading = styled.h1`
-  color: #fff;
-  margin-bottom: 10px;
+const Form = styled.form`
+  padding: 0px 20px;
+  margin: 10px;
+`;
+const Heading = styled.h2`
+  margin-top: 5px;
   text-align: center;
+  font-size: 30px;
 `;
 const FormControl = styled.div`
-  padding: 10px;
+  padding: 10px 10px;
 `;
 const Label = styled.label`
   display: block;
-  color: #fff;
-  margin-bottom: 10px;
+  font-size: 20px;
+  color: #777;
 `;
 const Input = styled.input`
+  padding: 10px;
   display: block;
   width: 100%;
-  padding: 10px;
-`;
-const Textarea = styled.textarea`
-  width: 100%;
-  padding: 20px;
+  margin-top: 5px;
 `;
 const Button = styled.button`
-  padding: 10px 50px;
-  font-size: 16px;
+  font-size: 20px;
+  display: block;
+  padding: 5px 20px;
+  margin-left: 10px;
+  background-color: blue;
+  outline: none;
   border: none;
-  margin-top: 10px;
-  margin-left: 15px;
+  color: white;
 `;
 
 const Single = ({ show, setShow }) => {
@@ -96,8 +94,9 @@ const Single = ({ show, setShow }) => {
   return (
     <Container>
       <Wrapper>
+        <Heading>Update note</Heading>
+
         <Form onSubmit={submitHandler}>
-          <Heading>Make a note</Heading>
           <FormControl>
             <Label>Title</Label>
             <Input
@@ -108,7 +107,7 @@ const Single = ({ show, setShow }) => {
           </FormControl>
           <FormControl>
             <Label>Text</Label>
-            <Textarea
+            <Input
               name="text"
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -122,8 +121,7 @@ const Single = ({ show, setShow }) => {
               onChange={(e) => setCategory(e.target.value)}
             />
           </FormControl>
-
-          <Button stype="submit">save</Button>
+          <Button type="submit">save</Button>
         </Form>
       </Wrapper>
     </Container>
