@@ -20,3 +20,8 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`listening at port ${port}`);
 });
+
+
+// "server": "nodemon backend/server.js",
+    // "client": "npm start --prefix frontend",
+    // "dev": "concurrently \"npm run server\" \"npm run client\""
