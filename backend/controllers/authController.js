@@ -8,14 +8,12 @@ const register = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
-    res.status(400);
-    throw new Error("please add all fields");
+    res.status(400).json({ message: "please add all fields" });
   }
 
   const userExist = await User.findOne({ name });
   if (userExist) {
-    res.status(400);
-    throw new Error("user already exixt");
+    res.status(400).json({ message: "user already exixt" });
   }
 
   const salt = await bcrypt.genSalt(10);
@@ -36,8 +34,7 @@ const register = asyncHandler(async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(400);
-    throw new Error("invalid user data");
+    res.status(400).json({ message: "invalid user data" });
   }
 });
 
@@ -52,8 +49,7 @@ const login = asyncHandler(async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(400);
-    throw new Error("invalid user data");
+    res.status(400).json({ message: "invalid user data" });
   }
 });
 

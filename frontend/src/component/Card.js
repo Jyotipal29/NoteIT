@@ -51,15 +51,25 @@ const Subbutton = styled.button`
   border: 1px solid blue;
   color: blue;
 `;
+
+const ButtonC = styled.button`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+const Span = styled.span``;
 const Card = ({ show, setShow }) => {
   const {
     state: { user, notes },
     dispatch,
   } = useNote();
+  const colors = ["#60a5fa", "#c084fc", "#818cf8", "#a78bfa", "#f472b6"];
   const [title, setTitle] = useState(" ");
   const [text, setText] = useState(" ");
   const [category, setCategory] = useState(" ");
-
+  const [Bgcolor, setBgColor] = useState(" ");
+  // console.log(color, "color");
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -69,13 +79,13 @@ const Card = ({ show, setShow }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-
+      console.log({ title, text, Bgcolor, category }, "post data to be sent");
       const { data } = await axios.post(
         `${api}/note/create`,
-        { title, text, category },
+        { title, Bgcolor, text, category },
         config
       );
-      console.log(data);
+      console.log(data, "notes data");
       dispatch({ type: "ADD_NOTE", payload: data });
       setTitle("");
       setText("");
@@ -90,7 +100,7 @@ const Card = ({ show, setShow }) => {
   return (
     <Container>
       <Wrapper>
-        <Form onSubmit={submitHandler}>
+        <Form>
           <Heading>Make a note</Heading>
 
           <FormControl>
@@ -117,8 +127,19 @@ const Card = ({ show, setShow }) => {
               onChange={(e) => setCategory(e.target.value)}
             />
           </FormControl>
-
-          <Button stype="submit">save</Button>
+          <div>
+            <Span>color</Span>
+            {colors.map((item) => (
+              <ButtonC
+                type="button"
+                onClick={() => setBgColor(item)}
+                style={{ backgroundColor: item }}
+              ></ButtonC>
+            ))}
+          </div>
+          <Button type="submit" onClick={submitHandler}>
+            save
+          </Button>
           <Subbutton onClick={() => setShow(!show)}>cancel</Subbutton>
         </Form>
       </Wrapper>

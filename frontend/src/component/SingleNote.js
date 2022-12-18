@@ -55,7 +55,7 @@ const SingleNote = () => {
     state: { user, notes, sort, category },
     dispatch,
   } = useNote();
-  // console.log(notes);
+  console.log(notes, "notes");
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -69,7 +69,7 @@ const SingleNote = () => {
     };
     fetchData();
   }, []);
-  // console.log(notes);
+  console.log(notes);
   const deleteHandler = async (id) => {
     const config = {
       headers: {
@@ -108,7 +108,7 @@ const SingleNote = () => {
         // notes &&
         transformedProduct().map((item) => (
           <Container>
-            <Wrapper>
+            <Wrapper style={{ backgroundColor: item.color }}>
               <Heading>{item.title}</Heading>
               <Text>{item.text}</Text>
               <Cat>{item.category}</Cat>

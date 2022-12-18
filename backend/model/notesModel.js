@@ -18,6 +18,9 @@ const noteSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    Bgcolor: {
+      type: String,
+    },
   },
   {
     timestamps: true,

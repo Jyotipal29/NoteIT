@@ -10,7 +10,7 @@ export const NoteProvider = ({ children }) => {
   const [state, dispatch] = useReducer(NoteReducer, {
     notes: [],
     note: [],
-    user: JSON.parse(localStorage.getItem("user") || null) || [],
+    user: JSON.parse(localStorage.getItem("user") || null),
     category: "all",
     sort: "newest",
   });

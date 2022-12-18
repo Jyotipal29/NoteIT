@@ -3,7 +3,8 @@ const asyncHandler = require("express-async-handler");
 // const { create } = require("../model/notesModel");
 
 const createNote = asyncHandler(async (req, res) => {
-  const { title, text, category } = req.body;
+  const { title, text, category, Bgcolor } = req.body;
+  console.log({ title, text, category, Bgcolor }, "post data");
   if (!title || !text || !category) {
     res.status(400);
     throw new Error("please ad all the fields");
@@ -13,6 +14,7 @@ const createNote = asyncHandler(async (req, res) => {
       title,
       text,
       category,
+      Bgcolor,
     });
     const newNote = await note.save();
     res.status(201).json(newNote);
