@@ -80,14 +80,14 @@ const Navbar = () => {
                 notes
               </Link>
             </NavItems>
-            <NavItems>
+            {/* <NavItems>
               <Link
                 to="/profile"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 <AccountCircleIcon />
               </Link>
-            </NavItems>
+            </NavItems> */}
             <NavItems>
               <Logout onClick={logout}>
                 <LogoutOutlinedIcon />
