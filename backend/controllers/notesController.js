@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 
 const createNote = asyncHandler(async (req, res) => {
   const { title, text, category, Bgcolor } = req.body;
-  console.log({ title, text, category, Bgcolor }, "post data");
+
   if (!title || !text || !category) {
     res.status(400).json({ message: "please add all the fields" });
   } else {

@@ -92,9 +92,7 @@ const Card = ({ show, setShow }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      if (text === " " || title === " " || !category === " ") {
-        toast.error("please provide values");
-      } else {
+     
         const { data } = await axios.post(
           `${api}/note/create`,
           { title, Bgcolor, text, category },
@@ -108,7 +106,7 @@ const Card = ({ show, setShow }) => {
         setText("");
         setCategory("");
         console.log(notes, "notes");
-      }
+      
     } catch (error) {
       toast.error(error.response.data.message);
       console.log(error.response.data.message);
