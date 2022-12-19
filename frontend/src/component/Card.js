@@ -1,5 +1,5 @@
 import React from "react";
-import RingLoader from "react-spinners/RingLoader";
+import FadeLoader from "react-spinners/FadeLoader";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
@@ -7,14 +7,13 @@ import styled from "styled-components";
 import axios from "axios";
 import { api } from "../constants/api";
 import { useNote } from "../context/context";
+import { useNavigate } from "react-router";
 const Container = styled.div`
   position: relative;
   top: 30px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
-const Wrapper = styled.div`
-  /* border: 1px solid black; */
-`;
+const Wrapper = styled.div``;
 const Form = styled.form`
   padding: 20px 20px;
   margin: 20px 30px;
@@ -73,6 +72,7 @@ const ColorDiv = styled.div`
   align-items: center;
 `;
 const Card = ({ show, setShow }) => {
+  const navigate = useNavigate();
   const {
     state: { user, notes },
     dispatch,
@@ -83,7 +83,6 @@ const Card = ({ show, setShow }) => {
   const [category, setCategory] = useState(" ");
   const [Bgcolor, setBgColor] = useState(" ");
   const [loading, setLoading] = useState(false);
-  // console.log(color, "color");
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -108,7 +107,6 @@ const Card = ({ show, setShow }) => {
         setTitle("");
         setText("");
         setCategory("");
-
         console.log(notes, "notes");
       }
     } catch (error) {
@@ -120,11 +118,12 @@ const Card = ({ show, setShow }) => {
   return (
     <>
       {loading ? (
-        <RingLoader
+        <FadeLoader
           color="blue"
-          cssOverride={{}}
-          size={150}
           speedMultiplier={0.5}
+          height={30}
+          margin={50}
+          width={2}
         />
       ) : (
         <Container>

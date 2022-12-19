@@ -8,7 +8,6 @@ import Login from "./screen/Login";
 import Single from "./screen/Single";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import PageNotFound from "./screen/PageNotFound";
-import Profile from "./screen/Profile";
 function App() {
   return (
     <Router>
@@ -19,7 +18,6 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route exact path="/notelist" element={<NoteList />} />
             <Route exact path="/note/:id" element={<Single />} />
-            <Route exact path="/profile" element={<Profile />} />
           </Route>
 
           <Route exact path="/register" element={<Register />} />

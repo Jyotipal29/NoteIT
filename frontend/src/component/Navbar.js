@@ -4,12 +4,8 @@ import styled from "styled-components";
 import { useNote } from "../context/context";
 import { useNavigate } from "react-router-dom";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 const Container = styled.div`
   background-color: blue;
-  /* position: fixed;
-  z-index: 9999;
-  width: 100%; */
 `;
 const Wrapper = styled.div`
   max-width: 1400px;
@@ -80,14 +76,7 @@ const Navbar = () => {
                 notes
               </Link>
             </NavItems>
-            {/* <NavItems>
-              <Link
-                to="/profile"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <AccountCircleIcon />
-              </Link>
-            </NavItems> */}
+
             <NavItems>
               <Logout onClick={logout}>
                 <LogoutOutlinedIcon />

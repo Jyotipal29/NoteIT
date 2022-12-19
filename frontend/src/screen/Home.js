@@ -1,10 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import axios from "axios";
 import Card from "../component/Card";
 import styled from "styled-components";
-import { api } from "../constants/api";
-import { useNote } from "../context/context";
 const Container = styled.div`
   background-color: #f9f9f9;
   height: 80vh;

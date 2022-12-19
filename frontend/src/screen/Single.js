@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import RingLoader from "react-spinners/RingLoader";
+import FadeLoader from "react-spinners/FadeLoader";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { api } from "../constants/api";
 import { useNote } from "../context/context";
-import { Navigate, useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -83,7 +83,6 @@ const Single = ({ show, setShow }) => {
     fetchData();
   }, [id]);
   const submitHandler = async (e) => {
-    setLoading(true);
     e.preventDefault();
 
     try {
@@ -100,7 +99,6 @@ const Single = ({ show, setShow }) => {
       // console.log(data);
       dispatch({ type: "UPDATE_NOTE", payload: data });
       toast.success("note updated ");
-      setLoading(false);
       navigate("/notelist");
     } catch (error) {
       toast.error(error.response.data.message);
@@ -110,11 +108,12 @@ const Single = ({ show, setShow }) => {
   return (
     <Container>
       {loading ? (
-        <RingLoader
+        <FadeLoader
           color="blue"
-          cssOverride={{}}
-          size={150}
-          speedMultiplier={0.5}
+          height={30}
+          margin={50}
+          width={2}
+          speedMultiplier={3}
         />
       ) : (
         <Wrapper>

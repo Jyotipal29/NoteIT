@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import RingLoader from "react-spinners/RingLoader";
 import ClipLoader from "react-spinners/ClipLoader";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -54,11 +53,15 @@ const Button = styled.button`
   color: blue;
   cursor: pointer;
 `;
-const SingleNote = () => {
-  let [loading, setLoading] = useState(true);
-  let [deleteLoading, setDeleteLoading] = useState(false);
+const SingleNote = ({ item }) => {
+  console.log(item, "item");
+  const [deleteState, setDeleteState] = useState({
+    id: null,
+    isLoading: false,
+  });
+
   const {
-    state: { user, notes, sort, category },
+    state: { user, notes },
     dispatch,
   } = useNote();
   console.log(notes, "notes");
@@ -67,19 +70,10 @@ const SingleNote = () => {
       Authorization: `Bearer ${user.token}`,
     },
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const { data } = await axios.get(`${api}/note/`, config);
-      // console.log(data);
-      dispatch({ type: "GET_NOTE", payload: data });
-    };
-    fetchData();
-    setLoading(false);
-  }, []);
+
   console.log(notes);
   const deleteHandler = async (id) => {
-    setDeleteLoading(true);
+    setDeleteState({ isLoading: true, id });
     try {
       const config = {
         headers: {
@@ -89,78 +83,46 @@ const SingleNote = () => {
       const { data } = await axios.delete(`${api}/note/${id}`, config);
       dispatch({ type: "DELETE_NOTE", payload: data });
       toast.success("note deleted successfully");
-      setDeleteLoading(false);
+      setDeleteState({ isLoading: false, id: null });
     } catch (error) {
       toast.error(error.response.data.message);
     }
   };
   useEffect(() => {}, [notes]);
 
-  const transformedProduct = () => {
-    let sortedProducts = notes;
-    sortedProducts = sortedProducts.sort((a, b) => {
-      const aCreatedAt = new Date(a.createdAt);
-      const bCreatedAt = new Date(b.createdAt);
-
-      return sort === "newest"
-        ? bCreatedAt - aCreatedAt
-        : aCreatedAt - bCreatedAt;
-    });
-
-    if (category && category !== "all") {
-      console.log(category, "93");
-      sortedProducts = sortedProducts?.filter(
-        (item) => item.category.toLowerCase() == category.toLowerCase()
-      );
-    }
-
-    return sortedProducts;
-  };
-
   return (
-    <>
-      {loading ? (
-        <RingLoader
-          color="blue"
-          cssOverride={{}}
-          size={150}
-          speedMultiplier={1}
-        />
-      ) : (
-        // notes &&
-        transformedProduct().map((item) => (
-          <Container style={{ backgroundColor: item.Bgcolor }}>
-            <Wrapper>
-              <Heading>{item.title}</Heading>
-              <Text>{item.text}</Text>
-              <Cat>{item.category}</Cat>
-              <Icons>
-                <DateD>
-                  {new Date(item.createdAt).toLocaleString("en-US")}
-                </DateD>
-                <Button onClick={() => deleteHandler(item._id)}>
-                  {deleteLoading ? (
-                    <ClipLoader
-                      color="blue"
-                      size={20}
-                      speedMultiplier={0.5}
-                      loading={deleteLoading}
-                    />
-                  ) : (
-                    <DeleteOutlineIcon />
-                  )}
-                </Button>
-                <Link to={`/note/${item._id}`} style={{ cursor: "pointer" }}>
-                  <EditOutlinedIcon />
-                </Link>
-              </Icons>
-            </Wrapper>
-            <ToastContainer />
-          </Container>
-        ))
-      )}
-    </>
+    <Container style={{ backgroundColor: item.Bgcolor }}>
+      <Wrapper>
+        <Heading>{item.title}</Heading>
+        <Text>{item.text}</Text>
+        <Cat>{item.category}</Cat>
+        <Icons>
+          <DateD>{new Date(item.createdAt).toLocaleString("en-US")}</DateD>
+          <Button onClick={() => deleteHandler(item._id)}>
+            {deleteState.id === item._id && deleteState.isLoading ? (
+              <ClipLoader
+                color="blue"
+                size={20}
+                speedMultiplier={0.5}
+                loading={deleteState.isLoading}
+              />
+            ) : (
+              <DeleteOutlineIcon />
+            )}
+          </Button>
+          <Link
+            to={`/note/${item._id}`}
+            style={{ cursor: "pointer", color: "blue" }}
+          >
+            <EditOutlinedIcon />
+          </Link>
+        </Icons>
+      </Wrapper>
+      <ToastContainer />
+    </Container>
   );
 };
 
 export default SingleNote;
+
+
