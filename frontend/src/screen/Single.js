@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
@@ -46,6 +48,7 @@ const Button = styled.button`
   outline: none;
   border: none;
   color: white;
+  cursor: pointer;
 `;
 
 const Single = ({ show, setShow }) => {
@@ -76,19 +79,25 @@ const Single = ({ show, setShow }) => {
   }, [id]);
   const submitHandler = async (e) => {
     e.preventDefault();
-    const config = {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    };
-    const { data } = await axios.put(
-      `${api}/note/${id}`,
-      { title, text, category },
-      config
-    );
-    // console.log(data);
-    dispatch({ type: "UPDATE_NOTE", payload: data });
-    navigate("/notelist");
+
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${api}/note/${id}`,
+        { title, text, category },
+        config
+      );
+      // console.log(data);
+      dispatch({ type: "UPDATE_NOTE", payload: data });
+      toast.success("note updated ");
+      navigate("/notelist");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   return (
@@ -124,6 +133,7 @@ const Single = ({ show, setShow }) => {
           <Button type="submit">save</Button>
         </Form>
       </Wrapper>
+      <ToastContainer />
     </Container>
   );
 };

@@ -50,6 +50,7 @@ const Small = styled.small`
 const Button = styled.button`
   color: #fff;
   background-color: blue;
+  cursor: pointer;
   padding: 10px;
   border: none;
   display: block;
@@ -72,31 +73,28 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    try {
+      const validationErrors = validate(formValues);
+      setFormErrors(validate(formValues));
+      // At least one error was found.
+      if (Object.values(validationErrors).some((error) => error.length > 0)) {
+        toast.error("try again");
+        return;
+      }
+      const { data } = await axios.post(`${api}/auth/login`, formValues);
+      const token = data.token;
+      dispatch({ type: "LOGIN", payload: data });
+      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("token", token);
+      localStorage.setItem("isAuth", true);
+      setToken(token);
+      setIsAuth(true);
+      toast.success("logged in successfully!");
 
-    const validationErrors = validate(formValues);
-    setFormErrors(validate(formValues));
-    // At least one error was found.
-    if (Object.values(validationErrors).some((error) => error.length > 0)) {
-      toast.error("try again");
-      return;
+      navigate("/");
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
-    const { data } = await axios.post(`${api}/auth/login`, formValues);
-    const token = data.token;
-    dispatch({ type: "LOGIN", payload: data });
-    localStorage.setItem("user", JSON.stringify(data));
-    localStorage.setItem("token", token);
-    localStorage.setItem("isAuth", true);
-    setToken(token);
-    setIsAuth(true);
-    toast.success("registered successfully!");
-
-    navigate("/");
-    // setFormValues({
-    //   username: "",
-    //   email: "",
-    //   password: "",
-    // });
-    // navigate("/");
   };
 
   const validate = (values) => {
@@ -140,9 +138,12 @@ const Login = () => {
             <Small>{formErrors.password}</Small>
           </FormControler>
           <Button type="submit">Login</Button>
-          <Msg>register here <Link to="/register">register</Link></Msg>
+          <Msg>
+            register here <Link to="/register">register</Link>
+          </Msg>
         </Form>
       </Wrapper>
+      <ToastContainer />
     </Container>
   );
 };

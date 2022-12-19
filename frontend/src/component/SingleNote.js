@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Link } from "react-router-dom";
@@ -46,8 +48,9 @@ const Icons = styled.div`
 `;
 const Button = styled.button`
   border: none;
-  background-color: #fff;
+  background-color: transparent;
   color: blue;
+  cursor: pointer;
 `;
 const SingleNote = () => {
   // console.log(sort, filter);
@@ -71,13 +74,18 @@ const SingleNote = () => {
   }, []);
   console.log(notes);
   const deleteHandler = async (id) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    };
-    const { data } = await axios.delete(`${api}/note/${id}`, config);
-    dispatch({ type: "DELETE_NOTE", payload: data });
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.delete(`${api}/note/${id}`, config);
+      dispatch({ type: "DELETE_NOTE", payload: data });
+      toast.success("note deleted successfully");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
   useEffect(() => {}, [notes]);
 
@@ -107,8 +115,8 @@ const SingleNote = () => {
       {
         // notes &&
         transformedProduct().map((item) => (
-          <Container>
-            <Wrapper style={{ backgroundColor: item.color }}>
+          <Container style={{ backgroundColor: item.Bgcolor }}>
+            <Wrapper>
               <Heading>{item.title}</Heading>
               <Text>{item.text}</Text>
               <Cat>{item.category}</Cat>
@@ -119,11 +127,12 @@ const SingleNote = () => {
                 <Button onClick={() => deleteHandler(item._id)}>
                   <DeleteOutlineIcon />
                 </Button>
-                <Link to={`/note/${item._id}`}>
+                <Link to={`/note/${item._id}`} style={{ cursor: "pointer" }}>
                   <EditOutlinedIcon />
                 </Link>
               </Icons>
             </Wrapper>
+            <ToastContainer />
           </Container>
         ))
       }

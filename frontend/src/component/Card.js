@@ -1,10 +1,11 @@
 import React from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { api } from "../constants/api";
 import { useNote } from "../context/context";
-import { toast } from "react-toastify";
 const Container = styled.div`
   position: relative;
   top: 30px;
@@ -43,6 +44,7 @@ const Button = styled.button`
   outline: none;
   border: none;
   color: white;
+  cursor: pointer;
 `;
 const Subbutton = styled.button`
   padding: 5px 20px;
@@ -50,6 +52,7 @@ const Subbutton = styled.button`
   font-size: 20px;
   border: 1px solid blue;
   color: blue;
+  cursor: pointer;
 `;
 
 const ButtonC = styled.button`
@@ -57,14 +60,23 @@ const ButtonC = styled.button`
   height: 20px;
   border-radius: 50%;
   cursor: pointer;
+  padding: 10px;
+  margin: 5px;
 `;
-const Span = styled.span``;
+const Span = styled.span`
+  font-size: 20px;
+`;
+const ColorDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const Card = ({ show, setShow }) => {
   const {
     state: { user, notes },
     dispatch,
   } = useNote();
-  const colors = ["#60a5fa", "#c084fc", "#818cf8", "#a78bfa", "#f472b6"];
+  const colors = ["#809bce ", "#95b8d1", "#b8e0d2", "#d6eadf", "#eac4d5"];
   const [title, setTitle] = useState(" ");
   const [text, setText] = useState(" ");
   const [category, setCategory] = useState(" ");
@@ -87,13 +99,14 @@ const Card = ({ show, setShow }) => {
       );
       console.log(data, "notes data");
       dispatch({ type: "ADD_NOTE", payload: data });
+      toast.success("note created");
       setTitle("");
       setText("");
       setCategory("");
 
       console.log(notes, "notes");
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   };
   console.log(notes, "notes");
@@ -127,8 +140,8 @@ const Card = ({ show, setShow }) => {
               onChange={(e) => setCategory(e.target.value)}
             />
           </FormControl>
-          <div>
-            <Span>color</Span>
+          <ColorDiv>
+            <Span style={{ color: Bgcolor }}>color</Span>
             {colors.map((item) => (
               <ButtonC
                 type="button"
@@ -136,13 +149,14 @@ const Card = ({ show, setShow }) => {
                 style={{ backgroundColor: item }}
               ></ButtonC>
             ))}
-          </div>
+          </ColorDiv>
           <Button type="submit" onClick={submitHandler}>
             save
           </Button>
           <Subbutton onClick={() => setShow(!show)}>cancel</Subbutton>
         </Form>
       </Wrapper>
+      <ToastContainer />
     </Container>
   );
 };

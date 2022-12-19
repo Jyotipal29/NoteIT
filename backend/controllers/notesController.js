@@ -6,8 +6,7 @@ const createNote = asyncHandler(async (req, res) => {
   const { title, text, category, Bgcolor } = req.body;
   console.log({ title, text, category, Bgcolor }, "post data");
   if (!title || !text || !category) {
-    res.status(400);
-    throw new Error("please ad all the fields");
+    res.status(400).json({ message: "please ad all the fields" });
   } else {
     const note = new Note({
       user: req.user._id,
@@ -24,8 +23,7 @@ const updateNote = asyncHandler(async (req, res) => {
   //   const { title, text, category } = req.body;
   const note = await Note.findById(req.params.id);
   if (note.user.toString() !== req.user._id.toString()) {
-    res.status(401);
-    throw new Error("you cant perform this action");
+    res.status(401).json({ message: "you cant perform this action" });
   }
 
   const updatedNote = await Note.findByIdAndUpdate(req.params.id, req.body, {
@@ -37,19 +35,16 @@ const updateNote = asyncHandler(async (req, res) => {
 const deleteNote = asyncHandler(async (req, res) => {
   const note = await Note.findById(req.params.id);
   if (!note) {
-    res.status(400);
-    throw new Error("note not found");
+    res.status(400).json({ message: "note not found" });
   }
   //check for user
   if (!req.user) {
-    res.status(401);
-    throw new Error("user not found");
+    res.status(401).json({ message: "user not found" });
   }
   //make sure the logged iin user matches the goal user
 
   if (note.user.toString() !== req.user.id.toString()) {
-    res.status(401);
-    throw new Error("user not authorized");
+    res.status(401).json({ message: "user not authorized" });
   }
   await note.remove();
   res.status(200).json({ id: req.params.id });

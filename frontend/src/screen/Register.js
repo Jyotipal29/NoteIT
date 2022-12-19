@@ -54,6 +54,7 @@ const Button = styled.button`
   display: block;
   width: 100%;
   font-size: 16px;
+  cursor: pointer;
 `;
 const Msg = styled.p``;
 
@@ -77,31 +78,29 @@ const Register = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    try {
+      const validationErrors = validate(formValues);
+      setFormErrors(validate(formValues));
+      // At least one error was found.
+      if (Object.values(validationErrors).some((error) => error.length > 0)) {
+        toast.error("try again");
+        return;
+      }
+      const { data } = await axios.post(`${api}/auth/register`, formValues);
+      const token = data.token;
 
-    const validationErrors = validate(formValues);
-    setFormErrors(validate(formValues));
-    // At least one error was found.
-    if (Object.values(validationErrors).some((error) => error.length > 0)) {
-      toast.error("try again");
-      return;
+      dispatch({ type: "REGISTER", payload: data });
+      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("token", token);
+      localStorage.setItem("isAuth", true);
+      toast.success("registered successfully!");
+
+      setToken(token);
+      setIsAuth(true);
+      navigate("/");
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
-    const { data } = await axios.post(`${api}/auth/register`, formValues);
-    const token = data.token;
-
-    dispatch({ type: "REGISTER", payload: data });
-    localStorage.setItem("user", JSON.stringify(data));
-    localStorage.setItem("token", token);
-    localStorage.setItem("isAuth", true);
-    setToken(token);
-    setIsAuth(true);
-    navigate("/");
-    toast.success("registered successfully!");
-    // setFormValues({
-    //   username: "",
-    //   email: "",
-    //   password: "",
-    // });
-    // navigate("/");
   };
 
   const validate = (values) => {
@@ -162,6 +161,7 @@ const Register = () => {
           </Msg>
         </Form>
       </Wrapper>
+      <ToastContainer />
     </Container>
   );
 };

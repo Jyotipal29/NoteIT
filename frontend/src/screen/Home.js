@@ -25,6 +25,7 @@ const Button = styled.button`
   border-radius: 50%;
   border: none;
   color: blue;
+  cursor: pointer;
 `;
 const Home = () => {
   const [show, setShow] = useState(false);

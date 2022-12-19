@@ -25,6 +25,7 @@ const Logo = styled.div`
   font-size: 35px;
   font-weight: bold;
   font-style: italic;
+  cursor: pointer;
 `;
 const NavItem = styled.ul`
   display: flex;
@@ -44,6 +45,7 @@ const Logout = styled.button`
   color: white;
   font-size: 35px;
   font-weight: bold;
+  cursor: pointer;
 `;
 const Navbar = () => {
   const navigate = useNavigate();
@@ -97,7 +99,11 @@ const Navbar = () => {
             <NavItems>
               <Link
                 to="/login"
-                style={{ textDecoration: "none", color: "inherit" }}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  cursor: "pointer",
+                }}
               >
                 login
               </Link>
@@ -105,7 +111,11 @@ const Navbar = () => {
             <NavItems>
               <Link
                 to="/register"
-                style={{ textDecoration: "none", color: "inherit" }}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  cursor: "pointer",
+                }}
               >
                 Register
               </Link>
