@@ -6,7 +6,7 @@ const createNote = asyncHandler(async (req, res) => {
   const { title, text, category, Bgcolor } = req.body;
   console.log({ title, text, category, Bgcolor }, "post data");
   if (!title || !text || !category) {
-    res.status(400).json({ message: "please ad all the fields" });
+    res.status(400).json({ message: "please add all the fields" });
   } else {
     const note = new Note({
       user: req.user._id,

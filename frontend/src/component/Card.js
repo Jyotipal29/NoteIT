@@ -1,4 +1,5 @@
 import React from "react";
+import RingLoader from "react-spinners/RingLoader";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
@@ -81,83 +82,100 @@ const Card = ({ show, setShow }) => {
   const [text, setText] = useState(" ");
   const [category, setCategory] = useState(" ");
   const [Bgcolor, setBgColor] = useState(" ");
+  const [loading, setLoading] = useState(false);
   // console.log(color, "color");
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      console.log({ title, text, Bgcolor, category }, "post data to be sent");
-      const { data } = await axios.post(
-        `${api}/note/create`,
-        { title, Bgcolor, text, category },
-        config
-      );
-      console.log(data, "notes data");
-      dispatch({ type: "ADD_NOTE", payload: data });
-      toast.success("note created");
-      setTitle("");
-      setText("");
-      setCategory("");
+      if (text === " " || title === " " || !category === " ") {
+        toast.error("please provide values");
+      } else {
+        const { data } = await axios.post(
+          `${api}/note/create`,
+          { title, Bgcolor, text, category },
+          config
+        );
+        console.log(data, "notes data");
+        dispatch({ type: "ADD_NOTE", payload: data });
+        setLoading(false);
+        toast.success("note created");
+        setTitle("");
+        setText("");
+        setCategory("");
 
-      console.log(notes, "notes");
+        console.log(notes, "notes");
+      }
     } catch (error) {
       toast.error(error.response.data.message);
+      console.log(error.response.data.message);
     }
   };
   console.log(notes, "notes");
   return (
-    <Container>
-      <Wrapper>
-        <Form>
-          <Heading>Make a note</Heading>
+    <>
+      {loading ? (
+        <RingLoader
+          color="blue"
+          cssOverride={{}}
+          size={150}
+          speedMultiplier={0.5}
+        />
+      ) : (
+        <Container>
+          <Wrapper>
+            <Form>
+              <Heading>Make a note</Heading>
 
-          <FormControl>
-            <Label>Title</Label>
-            <Input
-              name="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <Label>Text</Label>
-            <Input
-              name="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <Label>Category</Label>
-            <Input
-              name="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            />
-          </FormControl>
-          <ColorDiv>
-            <Span style={{ color: Bgcolor }}>color</Span>
-            {colors.map((item) => (
-              <ButtonC
-                type="button"
-                onClick={() => setBgColor(item)}
-                style={{ backgroundColor: item }}
-              ></ButtonC>
-            ))}
-          </ColorDiv>
-          <Button type="submit" onClick={submitHandler}>
-            save
-          </Button>
-          <Subbutton onClick={() => setShow(!show)}>cancel</Subbutton>
-        </Form>
-      </Wrapper>
-      <ToastContainer />
-    </Container>
+              <FormControl>
+                <Label>Title</Label>
+                <Input
+                  name="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </FormControl>
+              <FormControl>
+                <Label>Text</Label>
+                <Input
+                  name="text"
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                />
+              </FormControl>
+              <FormControl>
+                <Label>Category</Label>
+                <Input
+                  name="category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                />
+              </FormControl>
+              <ColorDiv>
+                <Span style={{ color: Bgcolor }}>color</Span>
+                {colors.map((item) => (
+                  <ButtonC
+                    type="button"
+                    onClick={() => setBgColor(item)}
+                    style={{ backgroundColor: item }}
+                  ></ButtonC>
+                ))}
+              </ColorDiv>
+              <Button type="submit" onClick={submitHandler}>
+                save
+              </Button>
+              <Subbutton onClick={() => setShow(!show)}>cancel</Subbutton>
+            </Form>
+          </Wrapper>
+          <ToastContainer />
+        </Container>
+      )}
+    </>
   );
 };
 

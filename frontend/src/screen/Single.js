@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import RingLoader from "react-spinners/RingLoader";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
@@ -52,6 +53,7 @@ const Button = styled.button`
 `;
 
 const Single = ({ show, setShow }) => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
@@ -64,6 +66,7 @@ const Single = ({ show, setShow }) => {
   const [category, setCategory] = useState(" ");
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       const config = {
         headers: {
@@ -71,6 +74,8 @@ const Single = ({ show, setShow }) => {
         },
       };
       const { data } = await axios.get(`${api}/note/${id}`, config);
+      setLoading(false);
+
       setTitle(data.title);
       setText(data.text);
       setCategory(data.category);
@@ -78,6 +83,7 @@ const Single = ({ show, setShow }) => {
     fetchData();
   }, [id]);
   const submitHandler = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     try {
@@ -94,6 +100,7 @@ const Single = ({ show, setShow }) => {
       // console.log(data);
       dispatch({ type: "UPDATE_NOTE", payload: data });
       toast.success("note updated ");
+      setLoading(false);
       navigate("/notelist");
     } catch (error) {
       toast.error(error.response.data.message);
@@ -102,37 +109,47 @@ const Single = ({ show, setShow }) => {
 
   return (
     <Container>
-      <Wrapper>
-        <Heading>Update note</Heading>
+      {loading ? (
+        <RingLoader
+          color="blue"
+          cssOverride={{}}
+          size={150}
+          speedMultiplier={0.5}
+        />
+      ) : (
+        <Wrapper>
+          <Heading>Update note</Heading>
 
-        <Form onSubmit={submitHandler}>
-          <FormControl>
-            <Label>Title</Label>
-            <Input
-              name="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <Label>Text</Label>
-            <Input
-              name="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <Label>Category</Label>
-            <Input
-              name="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            />
-          </FormControl>
-          <Button type="submit">save</Button>
-        </Form>
-      </Wrapper>
+          <Form onSubmit={submitHandler}>
+            <FormControl>
+              <Label>Title</Label>
+              <Input
+                name="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <Label>Text</Label>
+              <Input
+                name="text"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <Label>Category</Label>
+              <Input
+                name="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              />
+            </FormControl>
+            <Button type="submit">save</Button>
+          </Form>
+        </Wrapper>
+      )}
+
       <ToastContainer />
     </Container>
   );

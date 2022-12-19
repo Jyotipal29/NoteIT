@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import RingLoader from "react-spinners/RingLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -53,7 +55,8 @@ const Button = styled.button`
   cursor: pointer;
 `;
 const SingleNote = () => {
-  // console.log(sort, filter);
+  let [loading, setLoading] = useState(true);
+  let [deleteLoading, setDeleteLoading] = useState(false);
   const {
     state: { user, notes, sort, category },
     dispatch,
@@ -66,14 +69,17 @@ const SingleNote = () => {
   };
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const { data } = await axios.get(`${api}/note/`, config);
       // console.log(data);
       dispatch({ type: "GET_NOTE", payload: data });
     };
     fetchData();
+    setLoading(false);
   }, []);
   console.log(notes);
   const deleteHandler = async (id) => {
+    setDeleteLoading(true);
     try {
       const config = {
         headers: {
@@ -83,6 +89,7 @@ const SingleNote = () => {
       const { data } = await axios.delete(`${api}/note/${id}`, config);
       dispatch({ type: "DELETE_NOTE", payload: data });
       toast.success("note deleted successfully");
+      setDeleteLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -112,7 +119,14 @@ const SingleNote = () => {
 
   return (
     <>
-      {
+      {loading ? (
+        <RingLoader
+          color="blue"
+          cssOverride={{}}
+          size={150}
+          speedMultiplier={1}
+        />
+      ) : (
         // notes &&
         transformedProduct().map((item) => (
           <Container style={{ backgroundColor: item.Bgcolor }}>
@@ -125,7 +139,16 @@ const SingleNote = () => {
                   {new Date(item.createdAt).toLocaleString("en-US")}
                 </DateD>
                 <Button onClick={() => deleteHandler(item._id)}>
-                  <DeleteOutlineIcon />
+                  {deleteLoading ? (
+                    <ClipLoader
+                      color="blue"
+                      size={20}
+                      speedMultiplier={0.5}
+                      loading={deleteLoading}
+                    />
+                  ) : (
+                    <DeleteOutlineIcon />
+                  )}
                 </Button>
                 <Link to={`/note/${item._id}`} style={{ cursor: "pointer" }}>
                   <EditOutlinedIcon />
@@ -135,7 +158,7 @@ const SingleNote = () => {
             <ToastContainer />
           </Container>
         ))
-      }
+      )}
     </>
   );
 };

@@ -29,7 +29,6 @@ const Button = styled.button`
 `;
 const Home = () => {
   const [show, setShow] = useState(false);
-
   return (
     <Container>
       <Wrapper>
