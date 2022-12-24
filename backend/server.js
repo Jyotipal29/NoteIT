@@ -22,6 +22,3 @@ app.listen(port, () => {
 });
 
 
-// "server": "nodemon backend/server.js",
-    // "client": "npm start --prefix frontend",
-    // "dev": "concurrently \"npm run server\" \"npm run client\""
