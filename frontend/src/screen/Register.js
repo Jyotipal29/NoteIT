@@ -7,6 +7,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../constants/api";
 import { useNote } from "../context/context";
+import ClipLoader from "react-spinners/ClipLoader";
+
 const Container = styled.div`
   background-color: #f9f9f9;
   height: 80vh;
@@ -59,6 +61,8 @@ const Button = styled.button`
 const Msg = styled.p``;
 
 const Register = () => {
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const {
     state: { user },
@@ -78,6 +82,7 @@ const Register = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const validationErrors = validate(formValues);
       setFormErrors(validate(formValues));
@@ -90,6 +95,8 @@ const Register = () => {
       const token = data.token;
 
       dispatch({ type: "REGISTER", payload: data });
+      setLoading(false);
+
       localStorage.setItem("user", JSON.stringify(data));
       localStorage.setItem("token", token);
       localStorage.setItem("isAuth", true);
@@ -155,7 +162,13 @@ const Register = () => {
             />
             <Small>{formErrors.password}</Small>
           </FormControler>
-          <Button type="submit">Register</Button>
+          <Button type="submit">
+            {loading ? (
+              <ClipLoader color="w" speedMultiplier={0.3} loading={loading} />
+            ) : (
+              "Register"
+            )}
+          </Button>
           <Msg>
             already have an account <Link to="/login">login</Link>
           </Msg>

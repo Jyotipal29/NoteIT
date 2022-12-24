@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../constants/api";
 import { Link } from "react-router-dom";
 import { useNote } from "../context/context";
+import ClipLoader from "react-spinners/ClipLoader";
+
 const Container = styled.div`
   background-color: #f9f9f9;
   height: 80vh;
@@ -59,6 +61,7 @@ const Button = styled.button`
 `;
 const Msg = styled.p``;
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { dispatch, token, setToken, isAuth, setIsAuth } = useNote();
 
@@ -73,6 +76,7 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const validationErrors = validate(formValues);
       setFormErrors(validate(formValues));
@@ -84,6 +88,7 @@ const Login = () => {
       const { data } = await axios.post(`${api}/auth/login`, formValues);
       const token = data.token;
       dispatch({ type: "LOGIN", payload: data });
+      setLoading(false);
       localStorage.setItem("user", JSON.stringify(data));
       localStorage.setItem("token", token);
       localStorage.setItem("isAuth", true);
@@ -137,7 +142,19 @@ const Login = () => {
             />
             <Small>{formErrors.password}</Small>
           </FormControler>
-          <Button type="submit">Login</Button>
+          <Button type="submit">
+            {loading ? (
+              <ClipLoader
+                color="white"
+                width={0.5}
+                height={0.5}
+                speedMultiplier={0.5}
+                loading={loading}
+              />
+            ) : (
+              "login"
+            )}
+          </Button>
           <Msg>
             register here <Link to="/register">register</Link>
           </Msg>
