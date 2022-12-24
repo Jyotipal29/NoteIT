@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 //register user
 const register = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
-
   if (!name || !email || !password) {
     res.status(400).json({ message: "please add all fields" });
   }
